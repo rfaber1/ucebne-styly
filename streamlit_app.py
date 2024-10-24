@@ -106,7 +106,8 @@ st.write("Zakrúžkujete tie z uvedených výrokov, ktoré vystihujú (sú typic
 # Checkbox for each statement
 selected_statements = []
 for statement_id, statement_text in statements.items():
-    if st.checkbox(statement_text, key=statement_id):
+    # Add a unique key for each checkbox to ensure proper rendering
+    if st.checkbox(statement_text, key=f"checkbox_{statement_id}"):
         selected_statements.append(statement_id)
 
 # Button to evaluate intelligences
@@ -114,8 +115,10 @@ if st.button("Vyhodnotiť inteligencie"):
     # Count responses for each intelligence category
     intelligence_scores = {category: 0 for category in intelligence_categories}
 
-    for category, ids in intelligence_categories.items():
-        intelligence_scores[category] = sum(1 for id in selected_statements if id in ids)
+    for statement_id in selected_statements:
+        for category, ids in intelligence_categories.items():
+            if statement_id in ids:
+                intelligence_scores[category] += 1
 
     # Display results in a table
     st.subheader("Vaše výsledky:")
@@ -128,12 +131,9 @@ if st.button("Vyhodnotiť inteligencie"):
     st.dataframe(results_df.style.highlight_max(axis=0))
 
     st.write("Riadky, v ktorých ste dosiahli najvyšší počet bodov, označujú tie druhy inteligencie (a súčasne aj učebné štýly), ktoré Vám pri učení sa najviac vyhovujú. Pozor! Najvyšší počet bodov ste mohli dosiahnuť aj vo viacerých riadkoch.")
-    
+
     # Optional: Provide feedback based on scores
     max_score_category = max(intelligence_scores, key=intelligence_scores.get)
     
     # Display best intelligence in a colored box
-    st.markdown(f"<div style='background-color: #d4edda; padding: 10px; border-radius: 5px;'>"
-                 f"<strong>Najsilnejšia inteligencia:</strong> {max_score_category} "
-                 f"(<strong>{intelligence_scores[max_score_category]} bodov</strong>)</div>",
-                 unsafe_allow_html=True)
+    st.markdown(f"<div style='background-color: #d4edda; padding: 10px;'>Najvyšší počet bodov ste dosiahli v kategórii: {max_score_category} ({intelligence_scores[max_score_category]} body)</div>", unsafe_allow_html=True)

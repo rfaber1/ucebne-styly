@@ -136,4 +136,4 @@ if st.button("Vyhodnotiť inteligencie"):
     max_score_category = max(intelligence_scores, key=intelligence_scores.get)
     
     # Display best intelligence in a colored box
-    st.markdown(f"<div style='background-color: #d4edda; padding: 10px;'>Najvyšší počet bodov ste dosiahli v kategórii: {max_score_category} ({intelligence_scores[max_score_category]} body)</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='background-color: #545E57; padding: 10px;'>Najvyšší počet bodov ste dosiahli v kategórii: {max_score_category} ({intelligence_scores[max_score_category]} body)</div>", unsafe_allow_html=True)
